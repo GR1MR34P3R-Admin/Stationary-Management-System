@@ -26,7 +26,7 @@ interface StationaryManagementProps {
 }
 
 export function StationaryManagement({ currentUser }: StationaryManagementProps) {
-  // Load data from local storage with fallback to default values
+  // Load data from local storage on component mount
   const { inventory: initialInventoryData, issues: initialIssuesData, 
           employees: initialEmployeesData, categories: initialCategoriesData } = loadStationaryData();
 

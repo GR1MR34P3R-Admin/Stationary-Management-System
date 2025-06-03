@@ -54,9 +54,10 @@ export function loadStationaryData() {
   };
 }
 
-// Clear all stationary management data from local storage
+// Clear all stationary management data from local storage (including employees and categories)
 export function clearStationaryData(): void {
   try {
+    // Clear all stationary data including employees and categories
     // Don't remove users data when clearing other data
     const preserveKeys = [STORAGE_KEYS.USERS, STORAGE_KEYS.CURRENT_USER];
     
@@ -65,6 +66,12 @@ export function clearStationaryData(): void {
         localStorage.removeItem(key);
       }
     });
+    
+    // Set empty arrays for all data types to ensure clean state
+    saveToLocalStorage(STORAGE_KEYS.INVENTORY, []);
+    saveToLocalStorage(STORAGE_KEYS.ISSUES, []);
+    saveToLocalStorage(STORAGE_KEYS.EMPLOYEES, []);
+    saveToLocalStorage(STORAGE_KEYS.CATEGORIES, []);
   } catch (error) {
     console.error("Error clearing data from local storage:", error);
   }
@@ -76,4 +83,23 @@ export function resetStationaryData(): void {
   saveToLocalStorage(STORAGE_KEYS.ISSUES, initialIssues);
   saveToLocalStorage(STORAGE_KEYS.EMPLOYEES, employees);
   saveToLocalStorage(STORAGE_KEYS.CATEGORIES, categories);
+}
+
+// Force clear all existing data to ensure fresh start
+export function forceResetToEmpty(): void {
+  try {
+    // Remove all existing data
+    localStorage.removeItem(STORAGE_KEYS.INVENTORY);
+    localStorage.removeItem(STORAGE_KEYS.ISSUES);
+    localStorage.removeItem(STORAGE_KEYS.EMPLOYEES);
+    localStorage.removeItem(STORAGE_KEYS.CATEGORIES);
+    
+    // Set explicitly empty arrays
+    saveToLocalStorage(STORAGE_KEYS.INVENTORY, []);
+    saveToLocalStorage(STORAGE_KEYS.ISSUES, []);
+    saveToLocalStorage(STORAGE_KEYS.EMPLOYEES, []);
+    saveToLocalStorage(STORAGE_KEYS.CATEGORIES, []);
+  } catch (error) {
+    console.error("Error force clearing data:", error);
+  }
 }

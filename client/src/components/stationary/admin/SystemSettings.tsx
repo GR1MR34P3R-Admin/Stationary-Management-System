@@ -62,11 +62,21 @@ export function SystemSettings({ onDataReset }: SystemSettingsProps) {
     });
   };
 
-  const handleClearData = () => {
+  const handleClearAllData = () => {
+    // Clear data from localStorage
     clearStationaryData();
     setShowClearDialog(false);
-    // Force a page reload to refresh all states
-    window.location.reload();
+    
+    // Trigger parent component data refresh
+    onDataReset();
+    
+    // Update local system info
+    updateSystemInfo();
+    
+    // Force a page reload to ensure all components are refreshed
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   const handleResetData = () => {
@@ -509,14 +519,14 @@ export function SystemSettings({ onDataReset }: SystemSettingsProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Clear All Data</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently remove all data from the system. This action cannot be undone.
+              This will permanently remove all data from the system, including inventory, issues, employees, and categories. This action cannot be undone.
               If you'd like to back up your data first, please cancel and use the export function.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction 
-              onClick={handleClearData}
+              onClick={handleClearAllData}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Clear All Data
